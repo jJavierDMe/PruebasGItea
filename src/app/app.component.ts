@@ -16,7 +16,10 @@ export class AppComponent implements OnInit {
 
   ngOnInit() {
     this.reportService.getReportsStream().subscribe({
-      next: chunk => this.reports.push(chunk),
+      next: chunk => {
+        console.log('Chunk recibido:', chunk); // 👈 aquí ves cada parte que llega
+        this.reports.push(chunk);
+      },
       error: err => console.error('Error en stream:', err),
       complete: () => console.log('Stream finalizado')
     });

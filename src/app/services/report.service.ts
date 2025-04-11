@@ -5,11 +5,10 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class ReportService {
-  private baseUrl = 'http://10.20.111.183:4000/reports';
-
+  private baseUrl = 'http://10.20.107.28:4000/reports';
+  
   constructor() {}
 
-  // Devuelve Observable que emite cada chunk del stream
   getReportsStream(): Observable<any> {
     return new Observable(observer => {
       fetch(this.baseUrl).then(response => {
@@ -30,14 +29,14 @@ export class ReportService {
 
             const chunk = decoder.decode(value, { stream: true });
 
-            // Si vienen múltiples líneas por chunk, divídelas
+            // Procesar cada línea (asumiendo JSON por línea)
             chunk.split('\n').forEach(line => {
-              if (line.trim()) {
+              const trimmed = line.trim();
+              if (trimmed) {
                 try {
-                  const parsed = JSON.parse(line);
-                  observer.next(parsed);
-                } catch (err) {
-                  console.warn('Chunk no válido:', line);
+                  observer.next(JSON.parse(trimmed));
+                } catch (e) {
+                  console.warn('No se pudo parsear el chunk:', trimmed);
                 }
               }
             });

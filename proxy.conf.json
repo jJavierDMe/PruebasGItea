@@ -1,0 +1,8 @@
+{
+    "/api": {
+      "target": "http://10.20.111.183:4000/reports",
+      "secure": false,
+      "changeOrigin": true,
+      "logLevel": "debug"
+    }
+  }
